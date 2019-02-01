@@ -2,6 +2,8 @@ class Api::V1::ProductsController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 
+  before_action :find_product, only: [:update, :destroy]
+
   def index
     @products = Product.all
     render json: @products
@@ -34,5 +36,9 @@ class Api::V1::ProductsController < ApplicationController
 
     def product_params
       params.require(:product).permit(:name, :price)
+    end
+
+    def find_product
+      @product = Product.find(params[:id])
     end
 end
